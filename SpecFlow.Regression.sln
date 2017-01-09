@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1DEEE1F-C449-4CAD-A6DF-5C9F8BFEC867}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{38712AC0-798B-4054-AD51-E7E93571DA1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlow.Regression.SpecFlowPlugin", "src\SpecFlow.Regression.SpecFlowPlugin\SpecFlow.Regression.SpecFlowPlugin.csproj", "{0463F8FE-7F28-47CB-ADEB-1F52368CB66A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0463F8FE-7F28-47CB-ADEB-1F52368CB66A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0463F8FE-7F28-47CB-ADEB-1F52368CB66A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0463F8FE-7F28-47CB-ADEB-1F52368CB66A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0463F8FE-7F28-47CB-ADEB-1F52368CB66A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0463F8FE-7F28-47CB-ADEB-1F52368CB66A} = {E1DEEE1F-C449-4CAD-A6DF-5C9F8BFEC867}
+	EndGlobalSection
+EndGlobal
