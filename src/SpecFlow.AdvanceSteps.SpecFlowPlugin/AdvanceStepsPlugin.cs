@@ -1,10 +1,10 @@
-﻿using SpecFlow.Regression;
+﻿using SpecFlow.AdvanceSteps;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Plugins;
 
 [assembly: RuntimePlugin(typeof(AdvanceStepsPlugin))]
 
-namespace SpecFlow.Regression
+namespace SpecFlow.AdvanceSteps
 {
     public class AdvanceStepsPlugin : IRuntimePlugin
     {

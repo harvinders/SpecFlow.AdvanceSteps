@@ -7,8 +7,8 @@
     <ProjectGuid>{0463F8FE-7F28-47CB-ADEB-1F52368CB66A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SpecFlow.Regression</RootNamespace>
-    <AssemblyName>SpecFlow.Regression.SpecFlowPlugin</AssemblyName>
+    <RootNamespace>SpecFlow.AdvanceSteps.Regression</RootNamespace>
+    <AssemblyName>SpecFlow.AdvanceSteps.SpecFlowPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,6 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvanceStepsPlugin.cs" />
+    <Compile Include="ExecutionContext.cs" />
+    <Compile Include="ExecutionContextContainer.cs" />
+    <Compile Include="ScenarioContextExtentions.cs" />
+    <Compile Include="ScenarioStepContextExtension.cs" />
+    <Compile Include="StepDefinition.cs" />
     <Compile Include="TestRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

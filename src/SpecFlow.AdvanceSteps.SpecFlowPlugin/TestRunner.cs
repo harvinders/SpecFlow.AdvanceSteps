@@ -7,13 +7,14 @@ using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using System.Linq;
 
-namespace SpecFlow.Regression
+namespace SpecFlow.AdvanceSteps
 {
     public class TestRunner : ITestRunner
     {
         private readonly ITestExecutionEngine normalExecutionEngine;
         private readonly ITestExecutionEngine nullExecutionEngine;
-        private bool isRegressionEnabled = true;
+        private bool isPeekingEnabled = false;
+        private ExecutionContext executionContext;
 
         internal List<Action<ITestExecutionEngine>> StepsToReplay = new List<Action<ITestExecutionEngine>>();
 
@@ -36,6 +37,10 @@ namespace SpecFlow.Regression
 
             nullContainer.RegisterInstanceAs((IBindingInvoker)new NullBindingInvoker());
             this.nullExecutionEngine = nullContainer.Resolve<ITestExecutionEngine>();
+
+            //TODO: check with newer SpecFlow if this is still necessary
+            container.RegisterTypeAs<ExecutionContext, ExecutionContext>();
+            this.executionContext = container.Resolve<ExecutionContext>();
         }
 
         public void InitializeTestRunner(int threadId)
@@ -65,12 +70,14 @@ namespace SpecFlow.Regression
 
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
-            if (scenarioInfo.Tags.Contains("enable-regression"))
-                this.isRegressionEnabled = true;
+            ExecutionContextContainer.Contexts[ThreadId] = this.executionContext;
+            if (scenarioInfo.Tags.Contains("enable-peeking"))
+                this.isPeekingEnabled = true;
 
+            executionContext.Steps.Clear();
             this.StepsToReplay.Clear();
 
-            if (this.isRegressionEnabled)
+            if (this.isPeekingEnabled)
             {
                 this.StepsToReplay.Add(e => e.OnScenarioStart(scenarioInfo));
             }
@@ -82,7 +89,7 @@ namespace SpecFlow.Regression
 
         public void CollectScenarioErrors()
         {
-            if (this.isRegressionEnabled)
+            if (this.isPeekingEnabled)
             {
                 this.StepsToReplay.Add(e => e.OnAfterLastStep());
             }
@@ -96,19 +103,37 @@ namespace SpecFlow.Regression
         {
             this.StepsToReplay.Add(e => e.OnScenarioEnd());
 
-            if (this.isRegressionEnabled)
+            try
             {
-                foreach (var action in this.StepsToReplay)
+                if (this.isPeekingEnabled)
                 {
-                    action(ExecutionEngine);
+                    int i = 0;
+                    foreach (var action in this.StepsToReplay)
+                    {
+                        if (0 != i && i <= executionContext.Steps.Count)
+                        {
+                            executionContext.CurrentStep = executionContext.Steps[i - 1];
+                            executionContext.PreviousStep = i <= 1 ? null : executionContext.Steps[i - 2];
+                            executionContext.NextStep = i >= executionContext.Steps.Count
+                                ? null
+                                : executionContext.Steps[i];
+                        }
+                        action(ExecutionEngine);
+                        i++;
+                    }
                 }
+            }
+            finally
+            {
+                ExecutionContextContainer.Contexts.TryRemove(ThreadId, out this.executionContext);
             }
         }
 
         public void Given(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            if (this.isRegressionEnabled)
+            if (this.isPeekingEnabled)
             {
+                executionContext.Steps.Add(new StepDefinition(StepDefinitionType.Given, text, tableArg, multilineTextArg));
                 this.StepsToReplay.Add(
                     e => e.Step(StepDefinitionKeyword.Given, keyword, text, multilineTextArg, tableArg));
             }
@@ -120,8 +145,9 @@ namespace SpecFlow.Regression
 
         public void When(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            if (this.isRegressionEnabled)
+            if (this.isPeekingEnabled)
             {
+                executionContext.Steps.Add(new StepDefinition(StepDefinitionType.When, text, tableArg, multilineTextArg));
                 this.StepsToReplay.Add(
                     e => e.Step(StepDefinitionKeyword.When, keyword, text, multilineTextArg, tableArg));
             }
@@ -133,8 +159,9 @@ namespace SpecFlow.Regression
 
         public void Then(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            if (this.isRegressionEnabled)
+            if (this.isPeekingEnabled)
             {
+                executionContext.Steps.Add(new StepDefinition(StepDefinitionType.Then, text, tableArg, multilineTextArg));
                 this.StepsToReplay.Add(
                     e => e.Step(StepDefinitionKeyword.Then, keyword, text, multilineTextArg, tableArg));
             }
@@ -146,8 +173,9 @@ namespace SpecFlow.Regression
 
         public void And(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            if (this.isRegressionEnabled)
+            if (this.isPeekingEnabled)
             {
+                executionContext.Steps.Add(new StepDefinition(executionContext.CurrentDefinitionType, text, tableArg, multilineTextArg));
                 this.StepsToReplay.Add(e => e.Step(StepDefinitionKeyword.And, keyword, text, multilineTextArg, tableArg));
             }
             else
@@ -158,8 +186,9 @@ namespace SpecFlow.Regression
 
         public void But(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            if (this.isRegressionEnabled)
+            if (this.isPeekingEnabled)
             {
+                executionContext.Steps.Add(new StepDefinition(executionContext.CurrentDefinitionType, text, tableArg, multilineTextArg));
                 this.StepsToReplay.Add(e => e.Step(StepDefinitionKeyword.But, keyword, text, multilineTextArg, tableArg));
             }
             else
@@ -174,6 +203,6 @@ namespace SpecFlow.Regression
 
         public ScenarioContext ScenarioContext => ExecutionEngine.ScenarioContext;
 
-        public ITestExecutionEngine ExecutionEngine => this.isRegressionEnabled ? this.nullExecutionEngine : this.normalExecutionEngine;
+        public ITestExecutionEngine ExecutionEngine => this.isPeekingEnabled ? this.nullExecutionEngine : this.normalExecutionEngine;
     }
 }
