@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1DEEE1F-C44
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{38712AC0-798B-4054-AD51-E7E93571DA1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlow.Regression.SpecFlowPlugin", "src\SpecFlow.Regression.SpecFlowPlugin\SpecFlow.Regression.SpecFlowPlugin.csproj", "{0463F8FE-7F28-47CB-ADEB-1F52368CB66A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlow.AdvanceSteps.SpecFlowPlugin", "src\SpecFlow.AdvanceSteps.SpecFlowPlugin\SpecFlow.AdvanceSteps.SpecFlowPlugin.csproj", "{0463F8FE-7F28-47CB-ADEB-1F52368CB66A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

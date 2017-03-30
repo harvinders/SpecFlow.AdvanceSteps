@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace SpecFlow.Regression
 {
-    public class RegressionTestRunner : ITestRunner
+    public class TestRunner : ITestRunner
     {
         private readonly ITestExecutionEngine normalExecutionEngine;
         private readonly ITestExecutionEngine nullExecutionEngine;
@@ -29,7 +29,7 @@ namespace SpecFlow.Regression
             }
         }
 
-        public RegressionTestRunner(ITestExecutionEngine executionEngine, IObjectContainer container)
+        public TestRunner(ITestExecutionEngine executionEngine, IObjectContainer container)
         {
             this.normalExecutionEngine = executionEngine;
             var nullContainer = new ObjectContainer(container);

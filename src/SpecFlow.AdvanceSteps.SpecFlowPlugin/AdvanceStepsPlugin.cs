@@ -2,17 +2,17 @@
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Plugins;
 
-[assembly: RuntimePlugin(typeof(RegressionPlugin))]
+[assembly: RuntimePlugin(typeof(AdvanceStepsPlugin))]
 
 namespace SpecFlow.Regression
 {
-    public class RegressionPlugin : IRuntimePlugin
+    public class AdvanceStepsPlugin : IRuntimePlugin
     {
         public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
         {
             runtimePluginEvents.CustomizeTestThreadDependencies += (sender, args) =>
             {
-                args.ObjectContainer.RegisterTypeAs<RegressionTestRunner, ITestRunner>();
+                args.ObjectContainer.RegisterTypeAs<TestRunner, ITestRunner>();
             };
         }
     }
