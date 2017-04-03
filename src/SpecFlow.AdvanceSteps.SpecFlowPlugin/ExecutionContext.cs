@@ -12,6 +12,8 @@ namespace SpecFlow.AdvanceSteps
             Steps = new LinkedList<StepDefinition>();
         }
 
+        internal bool PeekingEnabled { get; set; } = false;
+        internal bool RegressionEnabled { get; set; } = false;
         internal LinkedList<StepDefinition> Steps { get; set; }
         internal StepDefinition CurrentStep { get; set; }
         internal StepDefinition NextStep { get; set; }
@@ -24,7 +26,7 @@ namespace SpecFlow.AdvanceSteps
 
     internal class RepeatContext
     {
-        public uint Count { get; set; }
+        public int Count { get; set; }
         public StepDefinition BeginStepDefinition { get; set; }
         public StepDefinition EndStepDefinition { get; set; }
     }

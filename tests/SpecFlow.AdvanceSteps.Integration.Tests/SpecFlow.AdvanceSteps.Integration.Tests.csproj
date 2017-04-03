@@ -6,8 +6,8 @@
     <ProjectGuid>{755A658C-8D1E-467B-99F5-76B2D2509BEC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SpecFlow.PeekSteps.Integration.Tests</RootNamespace>
-    <AssemblyName>SpecFlow.PeekSteps.Integration.Tests</AssemblyName>
+    <RootNamespace>SpecFlow.AdvanceSteps.Integration.Tests</RootNamespace>
+    <AssemblyName>SpecFlow.AdvanceSteps.Integration.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -81,6 +81,12 @@
       <DependentUpon>PreviousNextThroughScenarioStepContext.feature</DependentUpon>
     </Compile>
     <Compile Include="PreviousNextThroughScenarioStepContext.Steps.cs" />
+    <Compile Include="Regression.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Regression.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Regression.Steps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -92,6 +98,10 @@
     <None Include="PreviousNextThroughScenarioStepContext.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PreviousNextThroughScenarioStepContext.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Regression.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Regression.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

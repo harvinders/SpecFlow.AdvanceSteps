@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace SpecFlow.PeekSteps.Integration.Tests
+namespace SpecFlow.AdvanceSteps.Integration.Tests
 {
     using TechTalk.SpecFlow;
     

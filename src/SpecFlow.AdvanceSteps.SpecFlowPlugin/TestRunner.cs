@@ -74,6 +74,12 @@ namespace SpecFlow.AdvanceSteps
             if (scenarioInfo.Tags.Contains("enable-peeking") || scenarioInfo.Tags.Contains("enable-regression"))
                 this.delayedExecution = true;
 
+            if (scenarioInfo.Tags.Contains("enable-peeking"))
+                this.executionContext.PeekingEnabled = true;
+
+            if (scenarioInfo.Tags.Contains("enable-regression"))
+                this.executionContext.RegressionEnabled = true;
+
             this.executionContext.Steps.Clear();
 
             if (this.delayedExecution)

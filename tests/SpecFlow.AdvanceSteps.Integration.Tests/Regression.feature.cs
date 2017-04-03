@@ -17,15 +17,15 @@ namespace SpecFlow.AdvanceSteps.Integration.Tests
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class AllStepsAreAccessedThroughScenarioContextInBeforeSceanrioHookFeature : Xunit.IClassFixture<AllStepsAreAccessedThroughScenarioContextInBeforeSceanrioHookFeature.FixtureData>, System.IDisposable
+    public partial class RegressionFeature : Xunit.IClassFixture<RegressionFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "AllStepsThroughScenarioContext.feature"
+#line 1 "Regression.feature"
 #line hidden
         
-        public AllStepsAreAccessedThroughScenarioContextInBeforeSceanrioHookFeature()
+        public RegressionFeature()
         {
             this.TestInitialize();
         }
@@ -33,8 +33,8 @@ namespace SpecFlow.AdvanceSteps.Integration.Tests
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "All Steps are accessed through ScenarioContext in BeforeSceanrio hook", "\tIn order to hook into interesting events\r\n\tAs a SpecFlow statement writer\r\n\tI wa" +
-                    "nt to be have access to steps in BeforeScenario hook", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Regression", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
+                    "f two numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -63,7 +63,7 @@ namespace SpecFlow.AdvanceSteps.Integration.Tests
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void SetFixture(AllStepsAreAccessedThroughScenarioContextInBeforeSceanrioHookFeature.FixtureData fixtureData)
+        public virtual void SetFixture(RegressionFeature.FixtureData fixtureData)
         {
         }
         
@@ -72,26 +72,32 @@ namespace SpecFlow.AdvanceSteps.Integration.Tests
             this.ScenarioTearDown();
         }
         
-        [Xunit.FactAttribute(DisplayName="All Steps are accessed through ScenarioContext in BeforeSceanrio hook")]
-        [Xunit.TraitAttribute("FeatureTitle", "All Steps are accessed through ScenarioContext in BeforeSceanrio hook")]
-        [Xunit.TraitAttribute("Description", "All Steps are accessed through ScenarioContext in BeforeSceanrio hook")]
-        [Xunit.TraitAttribute("Category", "testof-sceanrio-context")]
-        [Xunit.TraitAttribute("Category", "enable-peeking")]
-        public virtual void AllStepsAreAccessedThroughScenarioContextInBeforeSceanrioHook()
+        [Xunit.FactAttribute(DisplayName="Add two numbers")]
+        [Xunit.TraitAttribute("FeatureTitle", "Regression")]
+        [Xunit.TraitAttribute("Description", "Add two numbers")]
+        [Xunit.TraitAttribute("Category", "enable-regression")]
+        public virtual void AddTwoNumbers()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("All Steps are accessed through ScenarioContext in BeforeSceanrio hook", new string[] {
-                        "testof-sceanrio-context",
-                        "enable-peeking"});
-#line 8
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add two numbers", new string[] {
+                        "enable-regression"});
+#line 7
 this.ScenarioSetup(scenarioInfo);
+#line 8
+ testRunner.Given("I have a calculator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.Given("I have a simple given statement", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 10
- testRunner.And("I have a another simple given statement", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I would like to perform the following steps 3 time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.When("I have a simple when statement", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have entered 50 into the calculator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 12
- testRunner.Then("I have a simple then statement", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I have entered 70 into the calculator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 13
+ testRunner.When("I press add", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 14
+ testRunner.Then("the result should be 120 on the screen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 15
+  testRunner.And("I repeat the steps", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 17
+ testRunner.Then("I close the calculator and verify steps executed 3 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -103,12 +109,12 @@ this.ScenarioSetup(scenarioInfo);
             
             public FixtureData()
             {
-                AllStepsAreAccessedThroughScenarioContextInBeforeSceanrioHookFeature.FeatureSetup();
+                RegressionFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                AllStepsAreAccessedThroughScenarioContextInBeforeSceanrioHookFeature.FeatureTearDown();
+                RegressionFeature.FeatureTearDown();
             }
         }
     }
