@@ -13,10 +13,10 @@ namespace SpecFlow.AdvanceSteps
     {
         private readonly ITestExecutionEngine normalExecutionEngine;
         private readonly ITestExecutionEngine nullExecutionEngine;
-        private bool isPeekingEnabled = false;
+        private bool delayedExecution = false;
         private ExecutionContext executionContext;
 
-        internal List<Action<ITestExecutionEngine>> StepsToReplay = new List<Action<ITestExecutionEngine>>();
+        //internal LinkedList<Action<ITestExecutionEngine>> StepsToReplay = new LinkedList<Action<ITestExecutionEngine>>();
 
         public int ThreadId { get; private set; }
 
@@ -71,27 +71,29 @@ namespace SpecFlow.AdvanceSteps
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
             ExecutionContextContainer.Contexts[ThreadId] = this.executionContext;
-            if (scenarioInfo.Tags.Contains("enable-peeking"))
-                this.isPeekingEnabled = true;
+            if (scenarioInfo.Tags.Contains("enable-peeking") || scenarioInfo.Tags.Contains("enable-regression"))
+                this.delayedExecution = true;
 
-            executionContext.Steps.Clear();
-            this.StepsToReplay.Clear();
+            this.executionContext.Steps.Clear();
 
-            if (this.isPeekingEnabled)
+            if (this.delayedExecution)
             {
-                this.StepsToReplay.Add(e => e.OnScenarioStart(scenarioInfo));
+                executionContext.Steps.AddLast(
+                    new StepDefinition(e => e.OnScenarioStart(scenarioInfo)));
             }
             else
             {
                 ExecutionEngine.OnScenarioStart(scenarioInfo);
             }
+            
         }
 
         public void CollectScenarioErrors()
         {
-            if (this.isPeekingEnabled)
+            if (this.delayedExecution)
             {
-                this.StepsToReplay.Add(e => e.OnAfterLastStep());
+                executionContext.Steps.AddLast(
+                    new StepDefinition(e => e.OnAfterLastStep()));
             }
             else
             {
@@ -101,26 +103,35 @@ namespace SpecFlow.AdvanceSteps
 
         public void OnScenarioEnd()
         {
-            this.StepsToReplay.Add(e => e.OnScenarioEnd());
+            executionContext.Steps.AddLast(
+                new StepDefinition(e => e.OnScenarioEnd()));
 
             try
             {
-                if (this.isPeekingEnabled)
+                if (this.delayedExecution)
                 {
-                    int i = 0;
-                    foreach (var action in this.StepsToReplay)
+
+                    var node = this.executionContext.Steps.First;
+                    do
                     {
-                        if (0 != i && i <= executionContext.Steps.Count)
+                        this.executionContext.CurrentStep = node.Value;
+                        this.executionContext.PreviousStep = null != node.Previous?.Value.Text? node.Previous?.Value: null;
+                        this.executionContext.NextStep = null != node.Next?.Value.Text ? node.Next?.Value : null;
+
+                        node.Value.Action(ExecutionEngine);
+
+                        var endStep =
+                            this.executionContext.RepeatContext.FirstOrDefault(
+                                p => p.Value.EndStepDefinition == this.executionContext.CurrentStep);
+
+                        if (null != endStep.Key && 0 != endStep.Value.Count)
                         {
-                            executionContext.CurrentStep = executionContext.Steps[i - 1];
-                            executionContext.PreviousStep = i <= 1 ? null : executionContext.Steps[i - 2];
-                            executionContext.NextStep = i >= executionContext.Steps.Count
-                                ? null
-                                : executionContext.Steps[i];
+                            node = this.executionContext.Steps.Find(endStep.Value.BeginStepDefinition);
+
+                            if (null == node)
+                                throw new Exception("Shit happened");
                         }
-                        action(ExecutionEngine);
-                        i++;
-                    }
+                    } while (null != (node = node.Next));
                 }
             }
             finally
@@ -131,11 +142,9 @@ namespace SpecFlow.AdvanceSteps
 
         public void Given(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            if (this.isPeekingEnabled)
+            if (this.delayedExecution)
             {
-                executionContext.Steps.Add(new StepDefinition(StepDefinitionType.Given, text, tableArg, multilineTextArg));
-                this.StepsToReplay.Add(
-                    e => e.Step(StepDefinitionKeyword.Given, keyword, text, multilineTextArg, tableArg));
+                this.executionContext.Steps.AddLast(new StepDefinition(StepDefinitionType.Given, StepDefinitionKeyword.Given, text, tableArg, multilineTextArg, keyword));
             }
             else
             {
@@ -145,11 +154,9 @@ namespace SpecFlow.AdvanceSteps
 
         public void When(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            if (this.isPeekingEnabled)
+            if (this.delayedExecution)
             {
-                executionContext.Steps.Add(new StepDefinition(StepDefinitionType.When, text, tableArg, multilineTextArg));
-                this.StepsToReplay.Add(
-                    e => e.Step(StepDefinitionKeyword.When, keyword, text, multilineTextArg, tableArg));
+                this.executionContext.Steps.AddLast(new StepDefinition(StepDefinitionType.When, StepDefinitionKeyword.When, text, tableArg, multilineTextArg, keyword));
             }
             else
             {
@@ -159,11 +166,9 @@ namespace SpecFlow.AdvanceSteps
 
         public void Then(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            if (this.isPeekingEnabled)
+            if (this.delayedExecution)
             {
-                executionContext.Steps.Add(new StepDefinition(StepDefinitionType.Then, text, tableArg, multilineTextArg));
-                this.StepsToReplay.Add(
-                    e => e.Step(StepDefinitionKeyword.Then, keyword, text, multilineTextArg, tableArg));
+                this.executionContext.Steps.AddLast(new StepDefinition(StepDefinitionType.Then, StepDefinitionKeyword.Then, text, tableArg, multilineTextArg, keyword));
             }
             else
             {
@@ -173,10 +178,9 @@ namespace SpecFlow.AdvanceSteps
 
         public void And(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            if (this.isPeekingEnabled)
+            if (this.delayedExecution)
             {
-                executionContext.Steps.Add(new StepDefinition(executionContext.CurrentDefinitionType, text, tableArg, multilineTextArg));
-                this.StepsToReplay.Add(e => e.Step(StepDefinitionKeyword.And, keyword, text, multilineTextArg, tableArg));
+                this.executionContext.Steps.AddLast(new StepDefinition(this.executionContext.CurrentDefinitionType, StepDefinitionKeyword.And, text, tableArg, multilineTextArg, keyword));
             }
             else
             {
@@ -186,10 +190,9 @@ namespace SpecFlow.AdvanceSteps
 
         public void But(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            if (this.isPeekingEnabled)
+            if (this.delayedExecution)
             {
-                executionContext.Steps.Add(new StepDefinition(executionContext.CurrentDefinitionType, text, tableArg, multilineTextArg));
-                this.StepsToReplay.Add(e => e.Step(StepDefinitionKeyword.But, keyword, text, multilineTextArg, tableArg));
+                this.executionContext.Steps.AddLast(new StepDefinition(this.executionContext.CurrentDefinitionType, StepDefinitionKeyword.But, text, tableArg, multilineTextArg, keyword));
             }
             else
             {
@@ -203,6 +206,6 @@ namespace SpecFlow.AdvanceSteps
 
         public ScenarioContext ScenarioContext => ExecutionEngine.ScenarioContext;
 
-        public ITestExecutionEngine ExecutionEngine => this.isPeekingEnabled ? this.nullExecutionEngine : this.normalExecutionEngine;
+        public ITestExecutionEngine ExecutionEngine => this.delayedExecution ? this.nullExecutionEngine : this.normalExecutionEngine;
     }
 }

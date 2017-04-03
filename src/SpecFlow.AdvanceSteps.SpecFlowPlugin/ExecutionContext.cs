@@ -9,14 +9,23 @@ namespace SpecFlow.AdvanceSteps
     {
         internal ExecutionContext()
         {
-            Steps = new List<StepDefinition>();
+            Steps = new LinkedList<StepDefinition>();
         }
 
-        internal IList<StepDefinition> Steps { get; set; }
+        internal LinkedList<StepDefinition> Steps { get; set; }
         internal StepDefinition CurrentStep { get; set; }
         internal StepDefinition NextStep { get; set; }
         internal StepDefinition PreviousStep { get; set; }
 
         internal StepDefinitionType CurrentDefinitionType => Steps.Last().Type;
+
+        internal Dictionary<string, RepeatContext> RepeatContext { get; set; } = new Dictionary<string, RepeatContext>();
+    }
+
+    internal class RepeatContext
+    {
+        public uint Count { get; set; }
+        public StepDefinition BeginStepDefinition { get; set; }
+        public StepDefinition EndStepDefinition { get; set; }
     }
 }
