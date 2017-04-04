@@ -44,12 +44,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvanceStepsException.cs" />
     <Compile Include="AdvanceStepsPlugin.cs" />
     <Compile Include="ExecutionContext.cs" />
     <Compile Include="ExecutionContextContainer.cs" />
     <Compile Include="ScenarioContextExtentions.cs" />
     <Compile Include="ScenarioStepContextExtension.cs" />
     <Compile Include="StepDefinition.cs" />
+    <Compile Include="TagNotSetException.cs" />
     <Compile Include="TestRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,6 +59,8 @@
     <None Include="..\..\README.md">
       <Link>README.md</Link>
     </None>
+    <Content Include="app.config.install.xdt" />
+    <Content Include="app.config.uninstall.xdt" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

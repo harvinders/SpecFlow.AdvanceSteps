@@ -1,0 +1,9 @@
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <specFlow xdt:Transform="InsertIfMissing" />
+  <specFlow>
+	<plugins xdt:Transform="InsertIfMissing" />
+    <plugins>
+      <add name="SpecFlow.PeekSteps" type="Runtime" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+    </plugins>
+  </specFlow>
+</configuration>

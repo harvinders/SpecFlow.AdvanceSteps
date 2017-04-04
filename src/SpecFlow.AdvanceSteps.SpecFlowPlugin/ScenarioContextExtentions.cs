@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow
         {
             if (!ExecutionContextContainer.Contexts[Thread.CurrentThread.ManagedThreadId].PeekingEnabled)
             {
-                throw new Exception($"Please set enable-peeking tag on the scenario before attempting to call the method {nameof(GetAllSteps)}");
+                throw new TagNotSetException("enable-peeking",nameof(GetAllSteps));
             }
 
             return ExecutionContextContainer.Contexts[Thread.CurrentThread.ManagedThreadId].Steps.Where( def => !string.IsNullOrEmpty(def.Text));

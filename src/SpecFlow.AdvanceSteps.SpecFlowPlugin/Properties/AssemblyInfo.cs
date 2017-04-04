@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SpecFlow.AdvanceSteps.SpecFlowPlugin")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Provide access to SpecFlow steps through extension methods in ScenarioContext and SceanrioInfo. Also allows performing regression using step statements")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("harvinders")]
 [assembly: AssemblyProduct("SpecFlow.AdvanceSteps.SpecFlowPlugin")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]

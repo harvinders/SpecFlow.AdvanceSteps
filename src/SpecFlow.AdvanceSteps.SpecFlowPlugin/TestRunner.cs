@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using BoDi;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Bindings;
@@ -125,10 +126,15 @@ namespace SpecFlow.AdvanceSteps
                         this.executionContext.NextStep = null != node.Next?.Value.Text ? node.Next?.Value : null;
 
                         node.Value.Action(ExecutionEngine);
+                        Trace.WriteLine($"executed statement {node.Value.Text}");
 
                         var endStep =
                             this.executionContext.RepeatContext.FirstOrDefault(
                                 p => p.Value.EndStepDefinition == this.executionContext.CurrentStep);
+
+                        if(null != endStep.Key)
+                        Trace.WriteLine($"which is an end statement");
+
 
                         if (null != endStep.Key && 0 != endStep.Value.Count)
                         {
@@ -136,6 +142,9 @@ namespace SpecFlow.AdvanceSteps
 
                             if (null == node)
                                 throw new Exception("Shit happened");
+
+                            Trace.WriteLine($"pointing back to statement {node.Value.Text}");
+
                         }
                     } while (null != (node = node.Next));
                 }

@@ -13,6 +13,7 @@ namespace SpecFlow.PeekSteps.Integration.Tests
         private readonly List<int> numbers = new List<int>();
         private int result = 0;
         private int count;
+        private int addCount;
         public RegressionSteps(ScenarioContext scenarioContext)
         {
             this.scenarioContext = scenarioContext;
@@ -26,7 +27,6 @@ namespace SpecFlow.PeekSteps.Integration.Tests
         [Given(@"I would like to perform the following steps (.*) time")]
         public void GivenIWouldLikeToPerformTheFollowingStepsTime(int count)
         {
-            //ScenarioContext.Current.StepContext.RegisterRepeatCount("steps", count);
             this.scenarioContext.StepContext.RegisterRepeatCount("steps", count);
         }
         
@@ -60,6 +60,20 @@ namespace SpecFlow.PeekSteps.Integration.Tests
         public void ThenICloseTheCalculatorAndVerifyStepsExecutedTimes(int p0)
         {
             Assert.Equal(this.count, p0);
+        }
+
+
+        [Given(@"I would like to add a number (.*) times")]
+        public void GivenIWouldLikeToAddANumberTimes(int p0)
+        {
+            this.addCount++;
+            this.scenarioContext.StepContext.RegisterRepeatCount("addSteps", p0);
+        }
+
+        [Then(@"I repeat the add steps")]
+        public void ThenIRepeatTheAddSteps()
+        {
+            this.scenarioContext.StepContext.DecrementRepeatCount("addSteps");
         }
 
     }

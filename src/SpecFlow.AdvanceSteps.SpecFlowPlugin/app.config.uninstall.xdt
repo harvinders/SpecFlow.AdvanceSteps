@@ -1,0 +1,7 @@
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <specFlow>
+    <plugins>
+      <add name="SpecFlow.PeekSteps" type="Runtime" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+    </plugins>
+  </specFlow>
+</configuration>
